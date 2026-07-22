@@ -25,7 +25,7 @@ Custom PCB designed in KiCad (design files in [`pcb/`](pcb/)).
 - **DC barrel jack** — direct input (e.g. 12/24V wall adapter), bypasses PD negotiation
 - **Terminal Block** — direct input if user have PSU input, bypasses PD negotiation.
 
-Both inputs feed the LED strips directly and the AP63205 buck for 5V MCU power.
+Three inputs feed the LED strips directly and the AP63205 buck for 5V MCU power.
 
 ### Outputs (All shares same power rail)
 
