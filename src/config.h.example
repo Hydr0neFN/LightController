@@ -47,7 +47,7 @@
 
 // ---- HomeKit ---------------------------------------------------------------
 #define HK_DEVICE_NAME    "Light Controller"
-#define HK_PAIRING_CODE   "11122333"   // HomeKit setup code (no dashes)
+#define HK_PAIRING_CODE   "46637726"   // HomeKit setup code (no dashes)
 #define HK_HOSTNAME       "lightctrl"
 
 // Accessory tile names shown in the Home app.

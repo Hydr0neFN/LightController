@@ -53,7 +53,7 @@ The CH224K PD negotiation circuit is **currently disabled** (`ENABLE_PD 0` in co
 **Fixes needed for a future revision:**
 - Use a power resistor rated for ≥0.4W (or ≥0.15W if limiting to 12V max)
 - Short D+/D- on the CH224K side, remove the data line routing from the USB-C connector
-- The firmware PD controller (`PDController.h`) is fully implemented and tested in code — only the hardware needs fixing
+- The firmware PD controller (`PDController.h`) is implemented but untested on hardware — only the hardware needs fixing before end-to-end testing can happen
 
 ## Firmware
 
@@ -103,7 +103,7 @@ pio device monitor
 │   ├── Lights.h           # DimmableChannel + NeoStrip HomeKit services
 │   ├── PDController.h     # CH224K PD voltage negotiation driver
 │   └── StatusReporter.h   # MQTT publisher + JSON status builder
-├── pcb/                   # KiCad 8 design files
+├── pcb/                   # KiCad 10 design files
 │   ├── LEDController.kicad_sch   # Schematic
 │   ├── LEDController.kicad_pcb   # PCB layout
 │   ├── LEDController.kicad_pro   # Project file
