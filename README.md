@@ -1,6 +1,6 @@
 # LightController
 
-ESP32-C3 Super Mini based LED controller with USB-C PD input, DC barrel jack input, two PWM-dimmed LED strip channels, and an addressable NeoPixel output. Apple HomeKit native via [HomeSpan](https://github.com/HomeSpan/HomeSpan), with optional MQTT status reporting.
+ESP32-C3 Super Mini based LED controller with USB-C PD input, DC barrel jack/ terminal block input, two PWM-dimmed LED strip channels, and an addressable NeoPixel output. Apple HomeKit native via [HomeSpan](https://github.com/HomeSpan/HomeSpan), with optional MQTT status reporting.
 
 Built as a one-person project for **Year 1 Period 4 — Power up Yourself** at Hanze University of Applied Sciences, Groningen.
 
@@ -19,14 +19,15 @@ Custom PCB designed in KiCad (design files in [`pcb/`](pcb/)).
 | IRFZ44N × 2 | Low-side N-MOSFETs for LED strip channels |
 | UCC27423 | Dual gate driver for MOSFET channels |
 
-### Power Input
+### Power Input (Up to 24V tolorance)
 
 - **USB-C PD** via CH224K — negotiates 5V/9V/12V/15V/20V from a PD source
-- **DC barrel jack** — direct input (e.g. 24V wall adapter), bypasses PD negotiation
+- **DC barrel jack** — direct input (e.g. 12/24V wall adapter), bypasses PD negotiation
+- **Terminal Block** — direct input if user have PSU input, bypasses PD negotiation.
 
 Both inputs feed the LED strips directly and the AP63205 buck for 5V MCU power.
 
-### Outputs
+### Outputs (All shares same power rail)
 
 - **Channel A** — PWM-dimmed LED strip (low-side MOSFET, enable gate)
 - **Channel B** — PWM-dimmed LED strip (low-side MOSFET, enable gate)
@@ -39,7 +40,7 @@ The PCB was originally designed by [Andrei (ihoneypot)](https://github.com/ihone
 - USB-C PD input with CH224K voltage negotiation
 - DC barrel jack input as alternative power source
 - ESP8266 → ESP32-C3 Super Mini swap (HomeKit-capable, smaller footprint)
-- Unified power routing: two input paths merged to one rail, split to two LED strip outputs + NeoPixel output
+- Unified power routing: three input paths merged to one rail, split to two LED strip outputs + NeoPixel output
 - 3.3V→5V level shifter for NeoPixel data line
 
 ### PD Status — Not Working
