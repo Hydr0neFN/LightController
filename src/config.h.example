@@ -1,0 +1,97 @@
+#pragma once
+// ============================================================================
+//  LightController - board + user configuration
+//  Target: ESP32-C3 Super Mini  (board: nologo_esp32c3_super_mini)
+//
+//  Power path:  PD(~20V) / DC(~24V)  ->  LED strip VIN (direct)
+//                                    ->  on-board buck -> 5V -> ESP32-C3
+//  Outputs:
+//    CH A  : LED strip, low-side N-MOSFET on GND, gate via PWM1, enable ENBA
+//    CH B  : LED strip, low-side N-MOSFET on GND, gate via PWM2, enable ENBB
+//    NEO   : NeoPixel string, DIN through SN74LVC1T45 (3.3->5V level shift)
+//  PD nego: CH224K, MCU drives CFG1..3, reads PG (Power Good, active-LOW).
+// ============================================================================
+
+// ---- Pin map (from hardware net list) --------------------------------------
+#define PIN_PWM2          0   // GPIO0  CH B brightness  (NB: strapping pin)
+#define PIN_PWM1          1   // GPIO1  CH A brightness
+#define PIN_ENBA          2   // GPIO2  CH A enable (MOSFET / gate-driver enable)
+#define PIN_ENBB          3   // GPIO3  CH B enable
+#define PIN_NEOPIXEL_DIN  4   // GPIO4  NeoPixel data (via SN74LVC1T45)
+#define PIN_CFG1          5   // GPIO5  CH224K CFG1 (1k series)
+#define PIN_CFG2          7   // GPIO7  CH224K CFG2 (1k series)
+#define PIN_CFG3          6   // GPIO6  CH224K CFG3 (1k series)
+#define PIN_PG            21  // GPIO21 CH224K Power-Good, open-drain, 10k pull-up
+#define PIN_STATUS_LED    8   // GPIO8  on-board LED (also a boot strapping pin)
+
+// On-board LED polarity. ESP32-C3 Super Mini LED is active-LOW (LOW = lit).
+#define STATUS_LED_ON_LEVEL   LOW
+
+// Fault-blink periods (ms). LED is OFF when everything is normal.
+#define STATUS_BLINK_PG_MS    100   // fast  = PD power-good fault (highest prio)
+#define STATUS_BLINK_WIFI_MS  500   // slow  = WiFi disconnected
+
+// Channel A / B as (pwm, enable) pairs
+#define PIN_CHA_PWM       PIN_PWM1
+#define PIN_CHA_EN        PIN_ENBA
+#define PIN_CHB_PWM       PIN_PWM2
+#define PIN_CHB_EN        PIN_ENBB
+
+// ---- LED / PWM -------------------------------------------------------------
+#define PWM_FREQ_HZ       5000   // ESP32-C3 LEDC ok 5..65535 Hz
+#define NEOPIXEL_COUNT    16     // <-- set to your actual pixel count
+
+// ---- WiFi ------------------------------------------------------------------
+#define WIFI_SSID         "YOUR_SSID"
+#define WIFI_PASSWORD     "YOUR_PASSWORD"
+
+// ---- HomeKit ---------------------------------------------------------------
+#define HK_DEVICE_NAME    "Light Controller"
+#define HK_PAIRING_CODE   "11122333"   // HomeKit setup code (no dashes)
+#define HK_HOSTNAME       "lightctrl"
+
+// Accessory tile names shown in the Home app.
+#define HK_NAME_CHA       "Channel A"
+#define HK_NAME_CHB       "Channel B"
+#define HK_NAME_NEO       "Neopixel"
+
+// ---- PD / CH224K -----------------------------------------------------------
+// 1 = PD negotiation active (CH224K drives CFG, PG monitored).
+// 0 = DC-only input: skip PD nego entirely. CFG left high-Z, PG ignored, the
+//     'V' / MQTT voltage commands become no-ops, and PG never reports a fault.
+#define ENABLE_PD            0
+
+// Preconfigured requested voltage.
+//   0=5V  1=9V  2=12V  3=15V  4=20V   (use the PD_* enum names below)
+// WARNING: pick a value your LED strip tolerates. 20V matches the ~24V DC
+// design intent for the strips; drop to a lower rail if your strip is 12V.
+#define PD_DEFAULT_VOLTAGE   PD_20V
+
+// 1 = always boot at PD_DEFAULT_VOLTAGE, ignoring any value stored in NVS
+//     (true compile-time preconfig; runtime 'V' command still works until reset).
+// 0 = PD_DEFAULT_VOLTAGE is only the first-boot default; NVS wins afterwards.
+#define PD_FORCE_DEFAULT     0
+
+// PG settle timeout when (re)negotiating, milliseconds.
+#define PD_PG_TIMEOUT_MS     1500
+
+// Disable the ESP32 brown-out detector. PD voltage transitions can sag the
+// 5V rail briefly; the BOD may otherwise reset the MCU mid-switch.
+// Leave 0 unless you actually observe brown-out resets during voltage change.
+#define PD_DISABLE_BROWNOUT  0
+
+// ---- Status reporting ------------------------------------------------------
+// HomeSpan Web Log: browse http://<device-ip>/<WEBLOG_URL>  (replaces telnet).
+#define WEBLOG_MAX_ENTRIES   50
+#define WEBLOG_URL           "status"
+#define NTP_SERVER           "pool.ntp.org"
+#define TIME_ZONE            "UTC0"     // POSIX TZ string
+
+// ---- MQTT (optional) -------------------------------------------------------
+#define ENABLE_MQTT          1          // set 1 once broker is known
+#define MQTT_HOST            "10.0.0.1"
+#define MQTT_PORT            1883
+#define MQTT_USER            ""         // "" = no auth
+#define MQTT_PASS            ""
+#define MQTT_BASE_TOPIC      "lightctrl"
+#define MQTT_PUBLISH_MS      10000      // status publish interval

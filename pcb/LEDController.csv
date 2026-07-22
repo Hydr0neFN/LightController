@@ -1,0 +1,21 @@
+Reference,Qty,Value,DNP,Exclude from BOM,Exclude from Board,Footprint,Datasheet
+C1,1,C10uF,,,,Capacitor_SMD:C_0805_2012Metric,
+C2,1,C100nF,,,,Capacitor_SMD:C_0805_2012Metric,
+"C3,C4",2,C22uF,,,,Capacitor_SMD:C_1206_3216Metric,
+"C5,C6",2,10uF,,,,Capacitor_SMD:C_0805_2012Metric,
+C7,1,1uF,,,,Capacitor_SMD:C_0805_2012Metric,
+D1,1,SS54,,,,Diode_SMD:D_SMA,
+"H1,H2,H3,H4",4,MountingHole_Pad,,,,MountingHole:MountingHole_3.2mm_M3_Pad_Via,
+J1,1,USB_C_Receptacle,,,,Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12,
+J2,1,Barrel_Jack_Switch_MountingPin,,,,Connector_BarrelJack:BarrelJack_Kycon_KLDX-0202-xC_Horizontal,
+"J3,J4,J5",3,Screw_Terminal_01x02,,,,TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm,
+J6,1,Screw_Terminal_01x03,,,,TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-03P_1x03_P5.00mm,
+L1,1,L4.7uH,,,,Inductor_SMD:L_6.3x6.3_H3,
+"Q1,Q2",2,IRFZ44N,,,,Package_TO_SOT_THT:TO-220-3_Vertical,http://www.irf.com/product-info/datasheets/data/irf540n.pdf
+"R1,R2,R3",3,R1K,,,,Resistor_SMD:R_0805_2012Metric,
+"R4,R5,R6,R7,R8,R9,R10,R11",8,10K,,,,Resistor_SMD:R_0805_2012Metric,
+U1,1,AP63205WU,,,,Package_TO_SOT_SMD:TSOT-23-6,https://www.diodes.com/assets/Datasheets/AP63200-AP63201-AP63203-AP63205.pdf
+U2,1,ESP32-C3_SUPERMINI_SMD,,,,LEDController:MODULE_ESP32-C3_SUPERMINI_SMD,
+U3,1,CH224K,,,,Package_SO:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm,
+U4,1,UCC2742x,,,,LEDController:UCC2742x,
+U5,1,SN74LVC1T45DBV,,,,Package_TO_SOT_SMD:SOT-23-6,

@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name "LED_Controller_schema")(type "Legacy")(uri "${KIPRJMOD}/LED_Controller_schema.lib")(options "")(descr ""))
+  (lib (name "LEDController-rescue")(type "Legacy")(uri "${KIPRJMOD}/LEDController-rescue.lib")(options "")(descr ""))
+  (lib (name "RF_Module")(type "KiCad")(uri "C:/Program Files/KiCad/10.0/share/kicad/symbols/RF_Module.kicad_sym")(options "")(descr ""))
+)

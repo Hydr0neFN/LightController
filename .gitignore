@@ -1,0 +1,15 @@
+.pio
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# Real credentials — only config.h.example is committed
+src/config.h
+
+# KiCad temporaries
+pcb/*-bak
+pcb/_autosave-*
+pcb/*-cache.lib
+pcb/fp-info-cache
+pcb/*.kicad_prl
