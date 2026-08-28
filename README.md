@@ -1,3 +1,5 @@
+**English** · [繁體中文](README.zh-TW.md)
+
 # LightController
 <img width="460" height="443" alt="image" src="https://github.com/user-attachments/assets/db531565-c83b-4483-a6f2-add53fab505e" />
 
