@@ -169,5 +169,22 @@ void setup() {
 void loop() {
   homeSpan.poll();
   status->poll();
+#if ENABLE_MQTT
+  // BLE presence scanner (node "workdesk"): start once WiFi has been up for a while.
+  static bool bleStarted = false;
+  if (!bleStarted && WiFi.status() == WL_CONNECTED && millis() > 30000) {
+    bleStarted = true;
+    blepresence::setup([](const char *t, const char *p, bool r) { return status->publishRaw(t, p, r); });
+  }
+  blepresence::loop();
+  // WiFi CSI sensing (node "workdesk"), started 15 s after BLE so the two do not
+  // allocate at the same moment. The free-heap guard is CSI_MIN_FREE_HEAP.
+  static bool csiStarted = false;
+  if (!csiStarted && WiFi.status() == WL_CONNECTED && millis() > 45000) {
+    csiStarted = true;
+    csipresence::setup(BLE_NODE_NAME, [](const char *t, const char *p, bool r) { return status->publishRaw(t, p, r); });
+  }
+  if (csiStarted) csipresence::loop();
+#endif
   updateStatusLed();
 }

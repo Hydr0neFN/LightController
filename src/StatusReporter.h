@@ -7,6 +7,8 @@
 #if ENABLE_MQTT
   #include <WiFi.h>
   #include <PubSubClient.h>
+  #include "ble_presence.h"
+  #include "csi_presence.h"
 #endif
 
 // ============================================================================
@@ -32,6 +34,17 @@ public:
     _mqtt.setClient(_wifi);
     _mqtt.setServer(MQTT_HOST, MQTT_PORT);
     _mqtt.setCallback(mqttCallback);
+    _mqtt.setKeepAlive(60);     // BLE coexistence can stall WiFi for >15 s; default keepalive would drop the session
+    _mqtt.setBufferSize(768);   // BLE presence JSON is ~300 bytes (default limit 256)
+#endif
+  }
+
+  // Publish an arbitrary topic (used by ble_presence). False when MQTT is down.
+  bool publishRaw(const char *topic, const char *payload, bool retain) {
+#if ENABLE_MQTT
+    return _mqtt.connected() && _mqtt.publish(topic, payload, retain);
+#else
+    return false;
 #endif
   }
 
@@ -81,6 +94,8 @@ private:
                       MQTT_BASE_TOPIC "/online", 0, true, "0")) {
       _mqtt.publish(MQTT_BASE_TOPIC "/online", "1", true);
       _mqtt.subscribe(MQTT_BASE_TOPIC "/cmd/voltage");   // net PD-voltage control
+      blepresence::subscribe([](const char *t) { _self->_mqtt.subscribe(t); });
+      csipresence::subscribe([](const char *t) { _self->_mqtt.subscribe(t); });
       WEBLOG("MQTT connected to %s:%d", MQTT_HOST, MQTT_PORT);
     }
   }
@@ -89,6 +104,8 @@ private:
   // nominal volts 5/9/12/15/20. Triggers the registered voltage handler, which
   // persists to NVS and sheds load during the switch.
   static void mqttCallback(char *topic, byte *payload, unsigned int len) {
+    if (csipresence::onMessage(topic, payload, len)) return;   // presence/<node>/cmd csi_* (before BLE)
+    if (blepresence::onMessage(topic, payload, len)) return;   // presence/... topics
     if (!_self || !_self->_voltHandler) return;
     char b[8] = {0};
     if (len >= sizeof(b)) len = sizeof(b) - 1;
