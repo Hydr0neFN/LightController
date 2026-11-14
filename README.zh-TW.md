@@ -20,13 +20,13 @@
 ## 運作方式
 
 ```
-  USB-C PD 輸入 ──┐
-  DC 圓孔插孔 ────┼──> 單一電源軌 ──> Channel A
-  端子台 ─────────┘         │          Channel B
-                            │          NeoPixel
-                            └──> AP63205 5V 降壓 ──> ESP32-C3 Super Mini
-                                                     -> 透過 HomeSpan 接 HomeKit
-                                                     -> MQTT 狀態（選用）
+  USB-C PD input ──┐
+  DC barrel jack ──┼──> one power rail ──> Channel A
+  Terminal block ──┘         │             Channel B
+                             │             NeoPixel
+                             └──> AP63205 5V buck ──> ESP32-C3 Super Mini
+                                                       -> HomeKit via HomeSpan
+                                                       -> MQTT status (optional)
 ```
 
 三路輸入直接替 LED 燈條供電，也經由 AP63205 降壓轉換器供 5V 給 MCU。PD 輸入靠 CH224K 協商 5V/9V/12V/15V/20V。
