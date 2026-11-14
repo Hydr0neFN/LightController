@@ -11,13 +11,13 @@
 | ESP32-C3 Super Mini | MCU、WiFi、HomeKit 橋接器 |
 | CH224K | USB-C PD sink 控制器（5V/9V/12V/15V/20V 協商） |
 | AP63205WU | 降壓轉換器（Buck converter），PD/DC 電軌 → MCU 用的 5V |
-| SN74LVC1T45 | 3.3V → 5V 電位轉換器，供 NeoPixel DIN 使用 |
-| IRFZ44N × 2 | 低側 N-MOSFET，供 LED 燈條通道使用 |
-| UCC27423 | 雙閘極驅動器，供 MOSFET 通道使用 |
+| SN74LVC1T45 | 3.3V → 5V 電位轉換器，接 NeoPixel DIN |
+| IRFZ44N × 2 | 低側 N-MOSFET，驅動 LED 燈條通道 |
+| UCC27423 | 雙閘極驅動器，推動 MOSFET 通道 |
 
 ## 電源輸入（最高耐受 24V）
 
-- **USB-C PD** 透過 CH224K — 向 PD 供電源協商 5V/9V/12V/15V/20V
+- **USB-C PD** 透過 CH224K — 跟 PD 供電端協商 5V/9V/12V/15V/20V
 - **DC 圓孔插孔** — 直接輸入（例如 12/24V 壁插變壓器），不經 PD 協商
 - **端子台** — 使用者已有 PSU 輸入時可直接接，不經 PD 協商
 
@@ -37,7 +37,7 @@
 - DC 圓孔插孔輸入，可當替代電源
 - ESP8266 換成 ESP32-C3 Super Mini（支援 HomeKit、佔板面積更小）
 - 統一電源走線：三條輸入路徑併成一條電源軌，再分給兩組 LED 燈條輸出 + NeoPixel 輸出
-- 供 NeoPixel 資料線使用的 3.3V→5V 電位轉換器
+- NeoPixel 資料線用的 3.3V→5V 電位轉換器
 
 ## PD 狀態 — 尚未正常運作
 
